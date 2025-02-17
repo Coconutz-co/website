@@ -1,0 +1,233 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Coconutz. - Monke Madness</title>
+  <style>
+    /* Global Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      transition: all 0.3s ease-in-out;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #1a1a1a;
+      color: #fff;
+      scroll-behavior: smooth;
+      overflow-x: hidden;
+    }
+
+    /* Hide website content until signed in */
+    #website-content {
+      display: none;
+    }
+
+    /* Sign In Screen */
+    #sign-in {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: black;
+      color: white;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    input {
+      margin: 10px;
+      padding: 8px;
+      border-radius: 5px;
+      border: none;
+    }
+
+    /* Admin Panel Button */
+    .admin-open-btn {
+      background: #ff4444;
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s ease;
+      position: fixed;
+      bottom: 15px;
+      right: 15px;
+      z-index: 1000;
+    }
+
+    .admin-open-btn:hover {
+      background: #cc0000;
+      transform: scale(1.1);
+    }
+
+    /* Draggable Admin Panel */
+    .admin-panel {
+      display: none;
+      position: absolute;
+      top: 100px;
+      left: 50px;
+      background: #ff0000;
+      color: white;
+      padding: 15px;
+      border-radius: 10px;
+      width: 300px;
+      box-shadow: 0 5px 15px rgba(255, 0, 0, 0.4);
+      cursor: grab;
+    }
+
+    /* Close Button */
+    .admin-close-btn {
+      background: #222;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 50%;
+      font-weight: bold;
+      cursor: pointer;
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      transition: 0.3s;
+    }
+
+    .admin-close-btn:hover {
+      background: #ff4444;
+    }
+
+    /* Buttons */
+    .btn {
+      background: #ffcc00;
+      color: #222;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease-in-out;
+      margin: 5px;
+    }
+
+    .btn:hover {
+      background: #ff6600;
+      color: white;
+      transform: scale(1.1);
+    }
+
+    /* Sections */
+    section {
+      background: #292929;
+      padding: 20px;
+      margin: 20px auto;
+      border-radius: 10px;
+      width: 80%;
+      box-shadow: 0 4px 10px rgba(255, 204, 0, 0.4);
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 1s ease, transform 1s ease;
+    }
+
+    .show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sign In Screen -->
+  <div id="sign-in">
+    <h1>Welcome to Coconutz.</h1>
+    <p>Sign in to continue</p>
+    <input type="text" id="username" placeholder="Username">
+    <input type="password" id="password" placeholder="Password">
+    <button class="btn" onclick="signIn()">Sign In</button>
+  </div>
+
+  <!-- Website Content (Hidden Until Login) -->
+  <div id="website-content">
+    <button class="admin-open-btn" onclick="toggleAdminPanel()">🔧 Admin</button>
+
+    <!-- Admin Panel (Draggable) -->
+    <div class="admin-panel" id="admin-panel">
+      <button class="admin-close-btn" onclick="toggleAdminPanel()">X</button>
+      <h2>🔧 Admin Panel</h2>
+      <p>Welcome, <b id="admin-name">Alpha Monke</b> 🦍</p>
+      <button class="btn" onclick="floodMonke()">🐵 Flood Monke</button>
+      <button class="btn" onclick="resetChaos()">🛑 Reset Chaos</button>
+      <button class="btn" onclick="shutdownWebsite()">⚠️ Shutdown Website</button>
+    </div>
+
+    <main>
+      <section id="projects">
+        <h2>🚀 Current Projects</h2>
+        <p>We are working on <b>2 Gorilla Tag fan games</b> right now. Expect chaos. 😈</p>
+      </section>
+
+      <section id="fun-facts">
+        <h2>🤯 Random Fun Facts</h2>
+        <p><b>Did you know?</b> Monkeys can understand basic math. So basically, monkes are better at math than most of us. 😂</p>
+      </section>
+
+      <section id="memes">
+        <h2>😂 Join our Discord!</h2>
+        <button class="btn discord-btn" onclick="joinDiscord()">Join Discord</button>
+        <button class="btn discord-btn" onclick="copyDiscord()">Copy My Discord</button>
+
+      </section>
+
+      <section id="hire-me">
+        <h2>💼 Hire Me!</h2>
+        <p>Need developers with <b>monke energy</b>? We take on <b>up to 3 projects</b> at a time.</p>
+      </section>
+
+      <section id="logo-designer">
+        <h2>🎨 Need a Sick Logo?</h2>
+        <p>Want your project to look professional? We design **🔥 amazing logos!**</p>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    function signIn() {
+      let username = document.getElementById("username").value;
+      let password = document.getElementById("password").value;
+
+      if (
+        (username === "OddsJuix" && password === "supersigmapasswordUNCRACKABLE(****") ||
+        (username === "SkieZ" && password === "Skiezisw")
+        (username === "SkullC" && password === "SkullCiscool")
+      ) {
+        document.getElementById("sign-in").style.display = "none";
+        document.getElementById("website-content").style.display = "block";
+        document.getElementById("admin-name").innerText = username;
+      } else {
+        alert("Wrong username or password! Try again.");
+      }
+    }
+
+    function toggleAdminPanel() {
+      document.getElementById("admin-panel").style.display =
+        document.getElementById("admin-panel").style.display === "block" ? "none" : "block";
+    }
+
+    window.addEventListener("scroll", () => {
+      document.querySelectorAll("section").forEach((section) => {
+        if (section.getBoundingClientRect().top < window.innerHeight - 100) {
+          section.classList.add("show");
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>
